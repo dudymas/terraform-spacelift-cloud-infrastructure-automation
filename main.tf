@@ -12,6 +12,13 @@ module "yaml_stack_config" {
   context = module.this.context
 }
 
+local {
+  import_policy = var.global_policies != null
+  trigger_policy = local.import_policy ? var.global_policies.trigger : spacelift_policy.trigger_global.id
+  push_policy = local.import_policy ? var.global_policies.push : spacelift_policy.push.id
+  plan_policy = local.import_policy ? var.global_policies.plan : spacelift_policy.plan.id
+}
+
 module "stacks" {
   source = "./modules/stack"
 
@@ -35,9 +42,9 @@ module "stacks" {
   worker_pool_id = var.worker_pool_id
   runner_image   = var.runner_image
 
-  trigger_policy_id = spacelift_policy.trigger_global.id
-  push_policy_id    = spacelift_policy.push.id
-  plan_policy_id    = spacelift_policy.plan.id
+  trigger_policy_id = local.trigger_policy
+  push_policy_id    = local.push_policy
+  plan_policy_id    = local.plan_policy
 }
 
 # Define the global trigger policy that allows us to trigger on various context-level updates

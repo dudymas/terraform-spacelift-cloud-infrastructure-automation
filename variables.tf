@@ -3,6 +3,12 @@ variable "stacks" {
   description = "A list of stack configs"
 }
 
+variable "global_policies" {
+  type        = any
+  description = "either null or a map of {trigger = id, plan = id, push = id}"
+  default     = null
+}
+
 variable "imports_processing_enabled" {
   type        = bool
   description = "Enable/disable processing stack imports"
