@@ -12,7 +12,7 @@ module "yaml_stack_config" {
   context = module.this.context
 }
 
-local {
+locals {
   import_policy = var.global_policies != null
   trigger_policy = local.import_policy ? var.global_policies.trigger : spacelift_policy.trigger_global.id
   push_policy = local.import_policy ? var.global_policies.push : spacelift_policy.push.id
